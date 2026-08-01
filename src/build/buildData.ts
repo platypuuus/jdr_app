@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { listArchitectureTerms } from "../api/architecture.js";
-import { listMagicItems, listMonsters, listTraps, listWeapons } from "../api/open5e.js";
+import { listDangers } from "../api/dangers.js";
+import { listMagicItems, listMonsters, listWeapons } from "../api/open5e.js";
 
 const OUT_PATH = "web/data.json";
 
@@ -42,16 +43,21 @@ interface Bundle {
 
 async function main(): Promise<void> {
   console.log("Recuperation des sources (cache disque actif)...");
-  const [architecture, monsters, traps, magicItems, weapons] = await Promise.all([
+  const [architecture, monsters, dangers, magicItems, weapons] = await Promise.all([
     listArchitectureTerms(),
     listMonsters(),
-    listTraps(),
+    listDangers(),
     listMagicItems(),
     listWeapons(),
   ]);
+  const parNature = dangers.reduce<Record<string, number>>((total, danger) => {
+    const famille = danger.kind.split(",")[0] ?? danger.kind;
+    return { ...total, [famille]: (total[famille] ?? 0) + 1 };
+  }, {});
   console.log(
-    `  architecture: ${architecture.length} | monstres: ${monsters.length} | pieges: ${traps.length} | butins: ${magicItems.length} | armes: ${weapons.length}`
+    `  architecture: ${architecture.length} | monstres: ${monsters.length} | dangers: ${dangers.length} | butins: ${magicItems.length} | armes: ${weapons.length}`
   );
+  console.log(`  dangers par nature: ${JSON.stringify(parNature)}`);
 
   const bundle: Bundle = {
     genereLe: new Date().toISOString(),
@@ -60,6 +66,11 @@ async function main(): Promise<void> {
         nom: "Open5e (SRD 5.1)",
         url: "https://api.open5e.com",
         licence: "OGL 1.0a / Wizards of the Coast SRD",
+      },
+      {
+        nom: "SRD 5.2 (poisons)",
+        url: "https://github.com/5e-bits/5e-database",
+        licence: "CC BY 4.0 / Wizards of the Coast",
       },
       {
         nom: "Wikipedia FR, Glossaire de l'architecture",
@@ -79,11 +90,11 @@ async function main(): Promise<void> {
       ca: monster.armorClass,
       lieux: monster.environments,
     })),
-    pieges: traps.map((trap) => ({
-      slug: trap.slug,
-      nom: trap.name,
-      nature: trap.kind,
-      texte: trap.desc,
+    pieges: dangers.map((danger) => ({
+      slug: danger.slug,
+      nom: danger.name,
+      nature: danger.kind,
+      texte: danger.desc,
     })),
     butins: magicItems.map((item) => ({
       slug: item.slug,

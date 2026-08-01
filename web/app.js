@@ -3,7 +3,7 @@ import { TYPES, nouvelleGraine, tirerElement, tirerSalle } from "./tirage.js";
 const TITRES = {
   salle: "Salle",
   monstre: "Monstre",
-  piege: "Piège",
+  piege: "Danger",
   butin: "Butin",
   arme: "Arme",
 };
@@ -165,7 +165,7 @@ function vueSalle(graine) {
   if (salle.piege) {
     fragment.append(lienCarte(salle.piege.nom, salle.piege.nature, "piege", salle.piege.slug, true));
   } else {
-    fragment.append(el("p", "vide", "Aucun piège."));
+    fragment.append(el("p", "vide", "Aucun danger."));
   }
 
   fragment.append(rubrique("Butin"));
@@ -218,7 +218,7 @@ function vueAccueil() {
     etiquettes([
       ["salles", data.salles.length],
       ["monstres", data.monstres.length],
-      ["pièges", data.pieges.length],
+      ["dangers", data.pieges.length],
       ["butins", data.butins.length],
       ["armes", data.armes.length],
     ])

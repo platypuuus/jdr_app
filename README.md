@@ -19,7 +19,8 @@ en français, langue native de la sienne.
 | Source | Contenu | Licence |
 | --- | --- | --- |
 | `api.open5e.com/v1/monsters` | 322 monstres SRD, avec leurs environnements | OGL 1.0a |
-| `api.open5e.com/v1/sections` | 8 pièges SRD détaillés | OGL 1.0a |
+| `api.open5e.com/v1/sections` | 11 pièges et 3 maladies SRD | OGL 1.0a |
+| `5e-bits/5e-database` (SRD 5.2) | 14 poisons | CC BY 4.0 |
 | `api.open5e.com/v1/magicitems` | 237 objets magiques SRD | OGL 1.0a |
 | `api.open5e.com/v1/weapons` | 37 armes SRD | OGL 1.0a |
 | `fr.wikipedia.org`, Glossaire de l'architecture | 535 termes d'architecture | CC BY-SA 4.0 |
@@ -69,7 +70,7 @@ Un tirage de salle assemble, dans cet ordre et à partir de la même graine :
 1. un lieu, tiré parmi les environnements réellement présents sur les monstres
 2. deux termes d'architecture distincts, avec leur définition
 3. un occupant, tiré parmi les monstres dont les environnements contiennent ce lieu
-4. un piège, une fois sur deux
+4. un danger, une fois sur deux : piège, poison ou maladie
 5. un butin : un objet magique, ou à défaut une arme
 
 ## Tests
