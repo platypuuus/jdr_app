@@ -11,8 +11,14 @@ Chaque nom, chaque définition, chaque description est reprise telle quelle de s
 source. L'application ne fait que combiner ces fragments : seuls les libellés
 d'interface (Décor, Occupant, Danger, Butin) et la ponctuation sont écrits ici.
 
-Le contenu 5e est donc en anglais, langue native des sources. Le décor de salle est
-en français, langue native de la sienne.
+Le contenu 5e est donc en anglais, langue native des sources. Le décor de salle et
+les devinettes sont en français, langue native des leurs.
+
+Les devinettes viennent d'un recueil de 1877 lu par reconnaissance optique. Le texte
+n'est retouché que sur des artefacts de numérisation identifiables : une lettre isolée
+en fin de phrase à la place du point d'interrogation, une apostrophe ou un guillemet
+résiduel. Les entrées trop abîmées, ou rédigées en patois régional, sont écartées
+plutôt que réparées : sur 292 entrées lisibles, 147 sont retenues.
 
 ## Sources
 
@@ -24,7 +30,7 @@ en français, langue native de la sienne.
 | `api.open5e.com/v1/magicitems` | 237 objets magiques SRD | OGL 1.0a |
 | `api.open5e.com/v1/weapons` | 37 armes SRD | OGL 1.0a |
 | `fr.wikipedia.org`, Glossaire de l'architecture | 535 termes d'architecture | CC BY-SA 4.0 |
-| `nkilm/riddles-api` | 533 énigmes avec leur réponse | MIT |
+| `archive.org`, E. Rolland, Devinettes populaires de la France (1877) | 147 devinettes françaises | domaine public |
 
 Le filtre `document__slug=wotc-srd` restreint volontairement Open5e au SRD, pour
 éviter de mélanger des documents sous d'autres licences.

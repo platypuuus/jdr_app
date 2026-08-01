@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { listArchitectureTerms } from "../api/architecture.js";
 import { listDangers } from "../api/dangers.js";
 import { listMagicItems, listMonsters, listWeapons } from "../api/open5e.js";
-import { listRiddles } from "../api/riddles.js";
+import { listFrenchRiddles } from "../api/frenchRiddles.js";
 
 const OUT_PATH = "web/data.json";
 
@@ -51,7 +51,7 @@ async function main(): Promise<void> {
     listDangers(),
     listMagicItems(),
     listWeapons(),
-    listRiddles(),
+    listFrenchRiddles(),
   ]);
   const parNature = dangers.reduce<Record<string, number>>((total, danger) => {
     const famille = danger.kind.split(",")[0] ?? danger.kind;
@@ -76,9 +76,9 @@ async function main(): Promise<void> {
         licence: "CC BY 4.0 / Wizards of the Coast",
       },
       {
-        nom: "riddles-api (nkilm)",
-        url: "https://github.com/nkilm/riddles-api",
-        licence: "MIT",
+        nom: "E. Rolland, Devinettes populaires de la France (1877)",
+        url: "https://archive.org/details/devinettesoueni01parigoog",
+        licence: "domaine public",
       },
       {
         nom: "Wikipedia FR, Glossaire de l'architecture",
@@ -104,11 +104,7 @@ async function main(): Promise<void> {
       nature: danger.kind,
       texte: danger.desc,
     })),
-    enigmes: riddles.map((riddle) => ({
-      slug: riddle.slug,
-      question: riddle.question,
-      reponse: riddle.answer,
-    })),
+    enigmes: riddles,
     butins: magicItems.map((item) => ({
       slug: item.slug,
       nom: item.name,
