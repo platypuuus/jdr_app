@@ -35,6 +35,7 @@ retenues.
 | `api.open5e.com/v1/weapons` | 37 armes SRD | OGL 1.0a |
 | `fr.wikipedia.org`, Glossaire de l'architecture | 535 termes d'architecture | CC BY-SA 4.0 |
 | `archive.org`, E. Rolland, Devinettes populaires de la France (1877) | 63 devinettes françaises | domaine public |
+| `nkilm/riddles-api` | 469 énigmes anglaises, hors jeux de mots | MIT |
 | `an-array-of-french-words` | lexique de 336 000 formes, arbitre de lisibilité | MIT |
 
 Le filtre `document__slug=wotc-srd` restreint volontairement Open5e au SRD, pour
@@ -85,6 +86,34 @@ Un tirage de salle assemble, dans cet ordre et à partir de la même graine :
 4. un danger, une fois sur deux : piège, poison ou maladie
 5. un butin : un objet magique, ou à défaut une arme
 6. une énigme, environ une fois sur trois
+
+## Tri des énigmes
+
+Les énigmes sont le seul contenu que les sources ne fournissent pas au bon niveau de
+qualité : le corpus français libre est du folklore de 1877, et le corpus anglais
+repose souvent sur des jeux de mots. Le tri est donc manuel, et c'est toi qui décides.
+
+```
+npm run build:data     # écrit data/enigmes-candidates.json (532 candidates)
+npm run triage         # ouvre l'interface de tri sur http://localhost:8099
+npm run build:data     # ne garde dans le bundle que les énigmes retenues
+```
+
+L'interface montre une énigme à la fois, question et réponse visibles, avec sa langue.
+Flèche droite pour garder, flèche gauche pour jeter, flèche haut pour revenir sur la
+précédente. Chaque décision est écrite immédiatement dans
+`data/enigmes-decisions.json` : on peut fermer la fenêtre et reprendre plus tard.
+
+Ce fichier de décisions est versionné, contrairement au fichier de candidates : c'est
+du travail manuel qui ne se régénère pas. Tant qu'aucune décision n'est prise, toutes
+les candidates partent dans le bundle, pour que l'application reste utilisable.
+
+Les énigmes anglaises dont la solution tient aux lettres, à l'orthographe ou à la
+prononciation d'un mot sont écartées automatiquement en amont : elles ne survivent pas
+à une traduction à la volée en table. 65 sur 533 sont concernées.
+
+Le serveur de tri n'écoute que sur `127.0.0.1` et ne fait pas partie du déploiement,
+puisque Vercel ne sert que `web/`.
 
 ## Tests
 

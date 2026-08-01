@@ -8,7 +8,8 @@
     "serve": "node scripts/serve.js",
     "test": "node scripts/test-tirage.js",
     "typecheck": "tsc --noEmit",
-    "build:single": "node scripts/build-single.js"
+    "build:single": "node scripts/build-single.js",
+    "triage": "tsx scripts/triage.js"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

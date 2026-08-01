@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { listArchitectureTerms } from "../api/architecture.js";
 import { listDangers } from "../api/dangers.js";
 import { listMagicItems, listMonsters, listWeapons } from "../api/open5e.js";
-import { listFrenchRiddles } from "../api/frenchRiddles.js";
+import { appliquerDecisions, listCandidates, readDecisions, writeCandidates } from "./enigmes.js";
 
 const OUT_PATH = "web/data.json";
 
@@ -22,7 +22,7 @@ interface Bundle {
     lieux: string[];
   }[];
   pieges: { slug: string; nom: string; nature: string; texte: string }[];
-  enigmes: { slug: string; question: string; reponse: string }[];
+  enigmes: { slug: string; question: string; reponse: string; langue: string }[];
   butins: {
     slug: string;
     nom: string;
@@ -45,20 +45,24 @@ interface Bundle {
 
 async function main(): Promise<void> {
   console.log("Recuperation des sources (cache disque actif)...");
-  const [architecture, monsters, dangers, magicItems, weapons, riddles] = await Promise.all([
+  const [architecture, monsters, dangers, magicItems, weapons, candidates] = await Promise.all([
     listArchitectureTerms(),
     listMonsters(),
     listDangers(),
     listMagicItems(),
     listWeapons(),
-    listFrenchRiddles(),
+    listCandidates(),
   ]);
   const parNature = dangers.reduce<Record<string, number>>((total, danger) => {
     const famille = danger.kind.split(",")[0] ?? danger.kind;
     return { ...total, [famille]: (total[famille] ?? 0) + 1 };
   }, {});
+  await writeCandidates(candidates);
+  const decisions = await readDecisions();
+  const enigmes = appliquerDecisions(candidates, decisions);
+
   console.log(
-    `  architecture: ${architecture.length} | monstres: ${monsters.length} | dangers: ${dangers.length} | butins: ${magicItems.length} | armes: ${weapons.length} | enigmes: ${riddles.length}`
+    `  architecture: ${architecture.length} | monstres: ${monsters.length} | dangers: ${dangers.length} | butins: ${magicItems.length} | armes: ${weapons.length} | enigmes: ${enigmes.length}/${candidates.length}`
   );
   console.log(`  dangers par nature: ${JSON.stringify(parNature)}`);
 
@@ -78,6 +82,11 @@ async function main(): Promise<void> {
       {
         nom: "Lexique du francais contemporain (an-array-of-french-words)",
         url: "https://github.com/words/an-array-of-french-words",
+        licence: "MIT",
+      },
+      {
+        nom: "riddles-api (nkilm)",
+        url: "https://github.com/nkilm/riddles-api",
         licence: "MIT",
       },
       {
@@ -109,7 +118,7 @@ async function main(): Promise<void> {
       nature: danger.kind,
       texte: danger.desc,
     })),
-    enigmes: riddles,
+    enigmes,
     butins: magicItems.map((item) => ({
       slug: item.slug,
       nom: item.name,

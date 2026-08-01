@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tri des énigmes</title>
+    <link rel="stylesheet" href="triage.css" />
+  </head>
+  <body>
+    <header>
+      <div class="avancement">
+        <span id="compteur">…</span>
+        <div class="jauge"><div id="barre"></div></div>
+      </div>
+      <div class="bilan">
+        <span class="gardees" id="nbGardees">0</span> gardées ·
+        <span class="jetees" id="nbJetees">0</span> jetées
+      </div>
+    </header>
+
+    <main id="scene">
+      <p class="attente">Chargement…</p>
+    </main>
+
+    <footer>
+      <button id="jeter" class="jeter" type="button">Jeter <kbd>←</kbd></button>
+      <button id="annuler" class="annuler" type="button">Annuler <kbd>↑</kbd></button>
+      <button id="garder" class="garder" type="button">Garder <kbd>→</kbd></button>
+    </footer>
+
+    <script src="triage.js"></script>
+  </body>
+</html>

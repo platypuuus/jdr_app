@@ -9,6 +9,10 @@ out/
 # Sortie de tsc, jamais utilisee a l'execution (le projet tourne via tsx)
 dist/
 
+# Reconstruit par build:data. Les decisions de tri, elles, sont versionnees :
+# c'est du travail manuel qui ne se regenere pas.
+data/enigmes-candidates.json
+
 *.log
 scratch-*
 .DS_Store

@@ -1,0 +1,185 @@
+:root {
+  --fond: #16130f;
+  --carte: #211c16;
+  --bord: #3d3323;
+  --texte: #ece3d4;
+  --attenue: #a8977c;
+  --accent: #c8a758;
+  --garder: #6f9c5a;
+  --jeter: #b25c45;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--fond);
+  color: var(--texte);
+  font: 16px/1.55 "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--bord);
+}
+
+.avancement {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+#compteur {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  color: var(--attenue);
+  font-size: 14px;
+}
+
+.jauge {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--carte);
+  overflow: hidden;
+}
+
+#barre {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transition: width 0.15s;
+}
+
+.bilan {
+  flex: none;
+  font-size: 14px;
+  color: var(--attenue);
+}
+
+.gardees {
+  color: var(--garder);
+  font-weight: 700;
+}
+
+.jetees {
+  color: var(--jeter);
+  font-weight: 700;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 22px;
+  overflow-y: auto;
+}
+
+.carte {
+  width: 100%;
+  max-width: 760px;
+  background: var(--carte);
+  border: 1px solid var(--bord);
+  border-radius: 16px;
+  padding: 34px 38px;
+}
+
+.langue {
+  display: inline-block;
+  margin-bottom: 18px;
+  padding: 3px 11px;
+  border: 1px solid var(--bord);
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--attenue);
+}
+
+.question {
+  margin: 0;
+  font-size: 25px;
+  line-height: 1.45;
+}
+
+.reponse {
+  margin: 24px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--bord);
+  font-size: 21px;
+  color: var(--accent);
+}
+
+.attente,
+.fini {
+  text-align: center;
+  color: var(--attenue);
+  font-size: 19px;
+}
+
+.fini strong {
+  color: var(--accent);
+}
+
+footer {
+  display: grid;
+  grid-template-columns: 1fr 0.6fr 1fr;
+  gap: 12px;
+  padding: 16px 22px 24px;
+  border-top: 1px solid var(--bord);
+}
+
+footer button {
+  padding: 18px;
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  background: var(--carte);
+  color: var(--texte);
+  font: inherit;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+footer button:hover {
+  border-color: var(--attenue);
+}
+
+footer button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.garder {
+  border-color: var(--garder);
+  color: var(--garder);
+}
+
+.jeter {
+  border-color: var(--jeter);
+  color: var(--jeter);
+}
+
+kbd {
+  margin-left: 8px;
+  padding: 2px 7px;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  font-size: 12px;
+  opacity: 0.7;
+}
