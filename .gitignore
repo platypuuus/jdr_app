@@ -1,0 +1,15 @@
+node_modules/
+
+# Reponses HTTP brutes des API, entierement reconstructibles par npm run build:data
+cache/
+
+# Fichier autonome derive de web/, reconstructible par npm run build:single
+out/
+
+# Sortie de tsc, jamais utilisee a l'execution (le projet tourne via tsx)
+dist/
+
+*.log
+scratch-*
+.DS_Store
+Thumbs.db

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#16130f" />
+    <title>Table de donjon</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1 id="titre">Table de donjon</h1>
+      <button id="lien" class="lien" type="button" title="Copier le lien de ce tirage">lien</button>
+    </header>
+
+    <main id="scene" class="scene" aria-live="polite">
+      <p class="attente">Chargement des données...</p>
+    </main>
+
+    <nav class="barre" id="barre">
+      <button type="button" data-type="salle">Salle</button>
+      <button type="button" data-type="monstre">Monstre</button>
+      <button type="button" data-type="piege">Piège</button>
+      <button type="button" data-type="butin">Butin</button>
+      <button type="button" data-type="arme">Arme</button>
+    </nav>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
