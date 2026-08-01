@@ -12,6 +12,7 @@ const scene = document.getElementById("scene");
 const barre = document.getElementById("barre");
 const titre = document.getElementById("titre");
 const boutonLien = document.getElementById("lien");
+const boutonAccueil = document.getElementById("accueil");
 
 let data = null;
 
@@ -28,6 +29,15 @@ function lireRoute() {
 
 function aller(type, ref) {
   location.hash = `#/${type}/${encodeURIComponent(ref)}`;
+}
+
+// Retirer le fragment via l'historique plutot que via location.hash : affecter une
+// chaine vide laisse un "#" pendouiller dans l'URL et ne declenche pas toujours
+// hashchange. pushState n'emet aucun evenement, on redessine donc a la main.
+function allerAccueil() {
+  if (lireRoute() === null) return;
+  history.pushState(null, "", location.pathname + location.search);
+  rendre();
 }
 
 /* ---------- fabrication du DOM ---------- */
@@ -225,6 +235,7 @@ function rendre() {
   for (const bouton of barre.querySelectorAll("button")) {
     bouton.setAttribute("aria-current", route !== null && bouton.dataset.type === route.type ? "true" : "false");
   }
+  boutonAccueil.setAttribute("aria-hidden", route === null ? "true" : "false");
 
   if (route === null) {
     titre.textContent = "Table de donjon";
@@ -271,7 +282,11 @@ boutonLien.addEventListener("click", async () => {
   }, 1500);
 });
 
+boutonAccueil.addEventListener("click", allerAccueil);
+
 window.addEventListener("hashchange", rendre);
+// pushState ne declenche pas hashchange, mais le retour arriere depuis l'accueil si.
+window.addEventListener("popstate", rendre);
 
 // La version fichier unique injecte les donnees dans window plutot que de les servir.
 async function chargerDonnees() {

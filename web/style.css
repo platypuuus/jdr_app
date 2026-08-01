@@ -41,13 +41,22 @@ body {
 }
 
 .topbar h1 {
+  flex: 1;
+  min-width: 0;
   margin: 0;
+  text-align: center;
   font-size: 17px;
   font-weight: 600;
   letter-spacing: 0.02em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Masque sans liberer la place, pour que le titre ne se decale pas. */
+.lien[aria-hidden="true"] {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .lien {
