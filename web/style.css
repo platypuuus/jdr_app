@@ -203,6 +203,47 @@ body {
   color: var(--texte);
 }
 
+.enonce {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.45;
+  color: var(--texte);
+}
+
+.reveler {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px;
+  border: 1px dashed var(--bord);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--attenue);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.reveler:active {
+  background: var(--carte-haute);
+}
+
+.reveler[aria-hidden="true"] {
+  display: none;
+}
+
+.reponse {
+  margin: 18px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--bord);
+  font-size: 19px;
+  color: var(--accent);
+}
+
+.reponse[aria-hidden="true"] {
+  display: none;
+}
+
 .pied {
   margin-top: 26px;
   font-size: 12px;
@@ -220,7 +261,7 @@ body {
   left: 0;
   right: 0;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 1px;
   height: calc(var(--barre-h) + env(safe-area-inset-bottom));
   padding-bottom: env(safe-area-inset-bottom);
@@ -230,10 +271,12 @@ body {
 
 .barre button {
   border: 0;
+  padding: 0 2px;
   background: var(--carte);
   color: var(--texte);
   font: inherit;
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1.15;
   cursor: pointer;
 }
 

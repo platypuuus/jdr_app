@@ -1,6 +1,6 @@
 # Table de donjon
 
-Aide de jeu mobile pour le MJ. Cinq boutons : salle, monstre, piège, butin, arme.
+Aide de jeu mobile pour le MJ. Six boutons : salle, monstre, danger, butin, arme, énigme.
 Chaque tirage a sa propre adresse, donc on peut y revenir avec le bouton retour du
 navigateur ou en gardant le lien.
 
@@ -24,6 +24,7 @@ en français, langue native de la sienne.
 | `api.open5e.com/v1/magicitems` | 237 objets magiques SRD | OGL 1.0a |
 | `api.open5e.com/v1/weapons` | 37 armes SRD | OGL 1.0a |
 | `fr.wikipedia.org`, Glossaire de l'architecture | 535 termes d'architecture | CC BY-SA 4.0 |
+| `nkilm/riddles-api` | 533 énigmes avec leur réponse | MIT |
 
 Le filtre `document__slug=wotc-srd` restreint volontairement Open5e au SRD, pour
 éviter de mélanger des documents sous d'autres licences.
@@ -72,6 +73,7 @@ Un tirage de salle assemble, dans cet ordre et à partir de la même graine :
 3. un occupant, tiré parmi les monstres dont les environnements contiennent ce lieu
 4. un danger, une fois sur deux : piège, poison ou maladie
 5. un butin : un objet magique, ou à défaut une arme
+6. une énigme, environ une fois sur trois
 
 ## Tests
 
@@ -88,6 +90,9 @@ soit un butin soit une arme mais jamais les deux.
 - `#/salle/<graine>` : salle tirée de la graine
 - `#/monstre/<graine>` : monstre tiré de la graine
 - `#/monstre/@<slug>` : un monstre précis, par exemple `#/monstre/@goblin`
+
+La fiche d'une énigme masque la réponse derrière un bouton, pour pouvoir lire
+l'énoncé à voix haute sans se la dévoiler.
 
 Même schéma pour `piege`, `butin` et `arme`. Depuis une salle, chaque élément est
 cliquable et ouvre sa fiche complète.

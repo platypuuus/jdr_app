@@ -6,6 +6,7 @@ const TITRES = {
   piege: "Danger",
   butin: "Butin",
   arme: "Arme",
+  enigme: "Énigme",
 };
 
 const scene = document.getElementById("scene");
@@ -119,6 +120,26 @@ function vueButin(butin) {
   return bloc;
 }
 
+// La reponse reste cachee : le MJ lit l'enigme a voix haute avant de la decouvrir.
+function vueEnigme(enigme) {
+  const bloc = el("section", "carte");
+  bloc.append(el("p", "enonce", enigme.question));
+
+  const reponse = el("p", "reponse", enigme.reponse);
+  reponse.setAttribute("aria-hidden", "true");
+
+  const bouton = el("button", "reveler");
+  bouton.type = "button";
+  bouton.textContent = "révéler la réponse";
+  bouton.addEventListener("click", () => {
+    reponse.setAttribute("aria-hidden", "false");
+    bouton.setAttribute("aria-hidden", "true");
+  });
+
+  bloc.append(bouton, reponse);
+  return bloc;
+}
+
 function vueArme(arme) {
   const bloc = carte(arme.nom, null);
   bloc.append(
@@ -179,6 +200,13 @@ function vueSalle(graine) {
     );
   }
 
+  if (salle.enigme) {
+    fragment.append(rubrique("Énigme"));
+    fragment.append(
+      lienCarte(salle.enigme.question, null, "enigme", salle.enigme.slug, false)
+    );
+  }
+
   return fragment;
 }
 
@@ -189,6 +217,7 @@ const COLLECTIONS = {
   piege: () => data.pieges,
   butin: () => data.butins,
   arme: () => data.armes,
+  enigme: () => data.enigmes,
 };
 
 const VUES = {
@@ -196,6 +225,7 @@ const VUES = {
   piege: vuePiege,
   butin: vueButin,
   arme: vueArme,
+  enigme: vueEnigme,
 };
 
 function piedDePage() {
@@ -221,6 +251,7 @@ function vueAccueil() {
       ["dangers", data.pieges.length],
       ["butins", data.butins.length],
       ["armes", data.armes.length],
+      ["énigmes", data.enigmes.length],
     ])
   );
   bloc.append(el("p", "texte", "Choisis une catégorie en bas. Chaque tirage a son adresse : reviens dessus quand tu veux."));

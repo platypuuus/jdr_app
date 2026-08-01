@@ -1,7 +1,8 @@
-export const TYPES = ["salle", "monstre", "piege", "butin", "arme"];
+export const TYPES = ["salle", "monstre", "piege", "butin", "arme", "enigme"];
 
 const PROBA_PIEGE = 0.5;
 const PROBA_BUTIN = 0.6;
+const PROBA_ENIGME = 0.35;
 const NOMBRE_DECORS = 2;
 
 function hashSeed(texte) {
@@ -47,6 +48,7 @@ export function tirerElement(data, type, graine) {
     piege: data.pieges,
     butin: data.butins,
     arme: data.armes,
+    enigme: data.enigmes,
   };
   return pick(createPrng(`${type}:${graine}`), collections[type]);
 }
@@ -61,5 +63,6 @@ export function tirerSalle(data, graine) {
   const prendreButin = rng() < PROBA_BUTIN;
   const butin = prendreButin ? pick(rng, data.butins) : null;
   const arme = prendreButin ? null : pick(rng, data.armes);
-  return { lieu, decors, occupant, piege, butin, arme };
+  const enigme = rng() < PROBA_ENIGME ? pick(rng, data.enigmes) : null;
+  return { lieu, decors, occupant, piege, butin, arme, enigme };
 }

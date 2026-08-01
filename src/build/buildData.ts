@@ -2,6 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { listArchitectureTerms } from "../api/architecture.js";
 import { listDangers } from "../api/dangers.js";
 import { listMagicItems, listMonsters, listWeapons } from "../api/open5e.js";
+import { listRiddles } from "../api/riddles.js";
 
 const OUT_PATH = "web/data.json";
 
@@ -21,6 +22,7 @@ interface Bundle {
     lieux: string[];
   }[];
   pieges: { slug: string; nom: string; nature: string; texte: string }[];
+  enigmes: { slug: string; question: string; reponse: string }[];
   butins: {
     slug: string;
     nom: string;
@@ -43,19 +45,20 @@ interface Bundle {
 
 async function main(): Promise<void> {
   console.log("Recuperation des sources (cache disque actif)...");
-  const [architecture, monsters, dangers, magicItems, weapons] = await Promise.all([
+  const [architecture, monsters, dangers, magicItems, weapons, riddles] = await Promise.all([
     listArchitectureTerms(),
     listMonsters(),
     listDangers(),
     listMagicItems(),
     listWeapons(),
+    listRiddles(),
   ]);
   const parNature = dangers.reduce<Record<string, number>>((total, danger) => {
     const famille = danger.kind.split(",")[0] ?? danger.kind;
     return { ...total, [famille]: (total[famille] ?? 0) + 1 };
   }, {});
   console.log(
-    `  architecture: ${architecture.length} | monstres: ${monsters.length} | dangers: ${dangers.length} | butins: ${magicItems.length} | armes: ${weapons.length}`
+    `  architecture: ${architecture.length} | monstres: ${monsters.length} | dangers: ${dangers.length} | butins: ${magicItems.length} | armes: ${weapons.length} | enigmes: ${riddles.length}`
   );
   console.log(`  dangers par nature: ${JSON.stringify(parNature)}`);
 
@@ -71,6 +74,11 @@ async function main(): Promise<void> {
         nom: "SRD 5.2 (poisons)",
         url: "https://github.com/5e-bits/5e-database",
         licence: "CC BY 4.0 / Wizards of the Coast",
+      },
+      {
+        nom: "riddles-api (nkilm)",
+        url: "https://github.com/nkilm/riddles-api",
+        licence: "MIT",
       },
       {
         nom: "Wikipedia FR, Glossaire de l'architecture",
@@ -95,6 +103,11 @@ async function main(): Promise<void> {
       nom: danger.name,
       nature: danger.kind,
       texte: danger.desc,
+    })),
+    enigmes: riddles.map((riddle) => ({
+      slug: riddle.slug,
+      question: riddle.question,
+      reponse: riddle.answer,
     })),
     butins: magicItems.map((item) => ({
       slug: item.slug,
