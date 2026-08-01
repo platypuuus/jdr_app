@@ -16,9 +16,13 @@ les devinettes sont en français, langue native des leurs.
 
 Les devinettes viennent d'un recueil de 1877 lu par reconnaissance optique. Le texte
 n'est retouché que sur des artefacts de numérisation identifiables : une lettre isolée
-en fin de phrase à la place du point d'interrogation, une apostrophe ou un guillemet
-résiduel. Les entrées trop abîmées, ou rédigées en patois régional, sont écartées
-plutôt que réparées : sur 292 entrées lisibles, 147 sont retenues.
+en fin de phrase à la place du point d'interrogation, une apostrophe résiduelle.
+
+Le tri s'appuie sur un lexique du français contemporain plutôt que sur un jugement de
+goût : une devinette n'est retenue que si **tous** ses mots courants y figurent. Les
+devinettes en patois régional, celles en orthographe d'Ancien Régime et celles abîmées
+par l'OCR échouent toutes à ce test. Sur 292 entrées pourvues d'une réponse, 63 sont
+retenues.
 
 ## Sources
 
@@ -30,7 +34,8 @@ plutôt que réparées : sur 292 entrées lisibles, 147 sont retenues.
 | `api.open5e.com/v1/magicitems` | 237 objets magiques SRD | OGL 1.0a |
 | `api.open5e.com/v1/weapons` | 37 armes SRD | OGL 1.0a |
 | `fr.wikipedia.org`, Glossaire de l'architecture | 535 termes d'architecture | CC BY-SA 4.0 |
-| `archive.org`, E. Rolland, Devinettes populaires de la France (1877) | 147 devinettes françaises | domaine public |
+| `archive.org`, E. Rolland, Devinettes populaires de la France (1877) | 63 devinettes françaises | domaine public |
+| `an-array-of-french-words` | lexique de 336 000 formes, arbitre de lisibilité | MIT |
 
 Le filtre `document__slug=wotc-srd` restreint volontairement Open5e au SRD, pour
 éviter de mélanger des documents sous d'autres licences.

@@ -1,5 +1,11 @@
 import { createHash } from "node:crypto";
-import { fetchText } from "./httpJson.js";
+import { fetchJson, fetchText } from "./httpJson.js";
+
+// Liste de formes flechies du francais contemporain, qui sert d'arbitre : une
+// devinette dont un seul mot courant est absent de ce lexique est soit en patois
+// regional, soit en orthographe d'Ancien Regime, soit abimee par l'OCR.
+const LEXIQUE_URL =
+  "https://raw.githubusercontent.com/words/an-array-of-french-words/master/index.json";
 
 // Eugene Rolland, "Devinettes ou enigmes populaires de la France", 1877.
 // Domaine public. Texte issu de la reconnaissance optique du scan d'archive.org,
@@ -21,7 +27,7 @@ const MOT_CASSE = /\b[a-zà-ÿ]*[bcdfghjklmnpqrstvxzw]{4,}[a-zà-ÿ]*\b|\bw/i;
 const QUESTION_MIN = 20;
 const QUESTION_MAX = 260;
 const REPONSE_MIN = 2;
-const REPONSE_MAX = 45;
+const REPONSE_MAX = 90;
 const MINIMUM_MOTS_COURANTS = 4;
 
 // Les devinettes en patois regional et les lignes trop abimees par l'OCR ne
@@ -85,11 +91,21 @@ function lireEntree(entree: string[]): FrenchRiddle | null {
   let question: string[] = [];
   let reponseBrute: string | null = null;
 
-  for (const ligne of entree) {
+  for (let i = 0; i < entree.length; i++) {
+    const ligne = entree[i] ?? "";
     if (APPAREIL_CRITIQUE.test(ligne)) break;
     const trouvee = ligne.match(REPONSE);
     if (trouvee?.[1] !== undefined) {
-      reponseBrute = trouvee[1];
+      // Une reponse longue court sur plusieurs lignes ; les suivantes commencent
+      // alors par une minuscule. Les ignorer tronquait la reponse en plein milieu.
+      const suite: string[] = [trouvee[1]];
+      for (let j = i + 1; j < entree.length; j++) {
+        const continuation = entree[j] ?? "";
+        if (APPAREIL_CRITIQUE.test(continuation)) break;
+        if (!/^[a-zà-ÿ]/.test(continuation)) break;
+        suite.push(continuation);
+      }
+      reponseBrute = suite.join(" ");
       break;
     }
     question.push(ligne);
@@ -116,13 +132,39 @@ function estLisible(devinette: FrenchRiddle): boolean {
   return compterMotsCourants(question) >= MINIMUM_MOTS_COURANTS;
 }
 
+// Les majuscules sont ecartees du controle : ce sont des noms propres, absents de
+// tout lexique commun. Mais un mot en debut de phrase porte lui aussi une
+// majuscule sans etre un nom propre, il faut donc l'abaisser avant le controle,
+// sinon des formes anciennes comme "Quele" passent au travers.
+function abaisserDebutsDePhrase(texte: string): string {
+  return texte.replace(/(^|[.!?]\s+)([A-ZÀ-Þ])/g, (_, avant: string, lettre: string) => avant + lettre.toLowerCase());
+}
+
+// Apostrophes et traits d'union separent des mots a part entiere
+// ("balaient-ils", "l'eau").
+function motsInconnus(texte: string, lexique: Set<string>): string[] {
+  return abaisserDebutsDePhrase(texte)
+    .replace(/’/g, "'")
+    .split(/[^A-Za-zÀ-ÿ'-]+/)
+    .flatMap((jeton) => jeton.split(/['-]/))
+    .filter((jeton) => jeton.length > 1)
+    .filter((jeton) => jeton[0] === jeton[0]?.toLowerCase())
+    .filter((jeton) => !lexique.has(jeton.toLowerCase()));
+}
+
 export async function listFrenchRiddles(): Promise<FrenchRiddle[]> {
-  const ocr = await fetchText(ROLLAND_OCR_URL);
+  const [ocr, formes] = await Promise.all([
+    fetchText(ROLLAND_OCR_URL),
+    fetchJson<string[]>(LEXIQUE_URL),
+  ]);
+  const lexique = new Set(formes.map((forme) => forme.toLowerCase()));
 
   const retenues = new Map<string, FrenchRiddle>();
   for (const entree of decouperEnEntrees(ocr)) {
     const devinette = lireEntree(entree);
     if (devinette === null || !estLisible(devinette)) continue;
+    if (motsInconnus(devinette.question, lexique).length > 0) continue;
+    if (motsInconnus(devinette.reponse, lexique).length > 0) continue;
     if (retenues.has(devinette.question)) continue;
     retenues.set(devinette.question, devinette);
   }

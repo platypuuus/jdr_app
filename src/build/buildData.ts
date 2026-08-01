@@ -76,6 +76,11 @@ async function main(): Promise<void> {
         licence: "CC BY 4.0 / Wizards of the Coast",
       },
       {
+        nom: "Lexique du francais contemporain (an-array-of-french-words)",
+        url: "https://github.com/words/an-array-of-french-words",
+        licence: "MIT",
+      },
+      {
         nom: "E. Rolland, Devinettes populaires de la France (1877)",
         url: "https://archive.org/details/devinettesoueni01parigoog",
         licence: "domaine public",
